@@ -14,34 +14,40 @@
         <input type="submit">
     </form>
 
-<?php
-include_once 'src/OLXscraper.php';
+	<?php
+	include_once 'src/OLXscraper.php';
 
-if(isset($_POST['url']) && isset($_POST['sites'])) {
-    if (filter_var($_POST['url'], FILTER_VALIDATE_URL) === false) {
-        echo($_POST['url']." nie jest prawidłowym adresem url");
-    }
-    else {     
-        $list = OLXscraper::getOLXListData($_POST['url'], $_POST['sites']);
-        echo "<table>
-            <thead>
-                <tr>
-                    <th>Nr</th>
-                    <th>Nazwa ogłoszenia</th>
-                    <th>Użytkownik</th>
-                    <th>Miejscowość</th>
-                    <th>Nr telefonu</th>
-                </tr>
-            </thead>
-            <tbody>";
-        $i = 1;
-        foreach ($list as $element) {
-            echo "<tr><td>".$i.".</td><td>".$element['title']."</td><td>".$element['user']."</td><td>".$element['location']."</td><td>".$element['phone']."</td></tr>";
-            $i++;
-        }
-        echo "</tbody></table>";
-    }
-}
-?>
+	if(isset($_POST['url']) && isset($_POST['sites'])) {
+		if (filter_var($_POST['url'], FILTER_VALIDATE_URL) === false) {
+			echo($_POST['url']." nie jest prawidłowym adresem url");
+		}
+		else {     
+			$list = OLXscraper::getOLXListData($_POST['url'], $_POST['sites']);
+			echo "<table>
+				<thead>
+					<tr>
+						<th>Nr</th>
+						<th>Nazwa ogłoszenia</th>
+						<th>Użytkownik</th>
+						<th>Miejscowość</th>
+						<th>Nr telefonu</th>
+					</tr>
+				</thead>
+				<tbody>";
+			$i = 1;
+			foreach ($list as $element) {
+				echo "<tr><td>".$i.".</td><td>".$element['title']."</td><td>".$element['user']."</td><td>".$element['location']."</td><td>".$element['phone']."</td></tr>";
+				$i++;
+			}
+			echo "</tbody></table>";
+		}
+	}
+	?>
+	<footer>
+		<p>
+			Copyright (c) 2016, Marcin Walczak<br>
+			All rights reserved.
+		</p>
+	</footer>
 </body>
 </html>
