@@ -1,3 +1,3 @@
-# OLX-scrapper
-Simple scrapper for OLX.pl
+# OLX-scraper
+Simple data scraper for OLX.pl
 
