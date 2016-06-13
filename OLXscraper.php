@@ -19,12 +19,12 @@ class OLXscraper
         $html = file_get_html($url);
 
         $result=[];
-        $result['title'] = $html->find('h1.brkword')[0]->plaintext;
-        $result['user'] = $html->find('span.color-5')[0]->plaintext;
-        $result['location'] = $html->find('strong.c2b')[0]->plaintext;
+        $result['title'] = trim($html->find('h1.brkword')[0]->plaintext);
+        $result['user'] = trim($html->find('span.color-5')[0]->plaintext);
+        $result['location'] = trim($html->find('strong.c2b')[0]->plaintext);
         try{
             $content = file_get_contents(OLXscraper::$ajaxPhone.$id);
-            $result['phone'] = json_decode($content, true)['value'];
+            $result['phone'] = preg_replace('/[^0-9,]|,[0-9]*$/','', json_decode($content, true)['value']);
         }
         catch(Exception $e){
             $result['phone'] = null;
@@ -33,27 +33,30 @@ class OLXscraper
         return $result;
     }
 	
-    public static function getOLXLinkList($url, $sites = 1){
+    public static function getOLXLinkList($url, $pageFrom, $pageTo){
         $result = [];
 		$list = [];
-        for($i=1; $i<=$sites; $i++){
+        for($i=$pageFrom; $i<=$pageTo; $i++){
             $html = file_get_html($url."?page=".$i);
             $list = array_merge($list, $html->find('h3 a.link'));
         }
 		
         foreach($list as $link){
-            $result[] = $link->href;
+			if(!(in_array($link->href, $result))) $result[] = $link->href;
         }
         return $result;
     }
 	
-    public static function getOLXListData($url, $sites = 1){
-		set_time_limit(999999999);
-        error_reporting (E_ERROR);
+    public static function getOLXListData($url, $pageFrom, $pageTo, $unique){
         $result = [];
-        $links = OLXscraper::getOLXLinkList($url, $sites);
+        $links = OLXscraper::getOLXLinkList($url, $pageFrom, $pageTo);
         foreach($links as $link){
-            $result[] = OLXscraper::getOLXSiteData($link);
+			$record = OLXscraper::getOLXSiteData($link);
+			if($unique){
+				$phones = array_column($result, 'phone');
+				if(!(in_array($record['phone'], $phones))) $result[] = $record;
+			}
+			else $result[] = $record;
         }
         return $result;
     }

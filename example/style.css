@@ -18,3 +18,12 @@ th {
     background-color: #4CAF50;
     color: white;
 }
+label{
+    font-weight: bold;
+}
+input.url{
+    width: 100%;
+}
+input.numer{
+    width: 40px;
+}
