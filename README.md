@@ -4,7 +4,6 @@ Features:
 *get data from provided search result link  
 *you can choose search results page range to scrap  
 *filtering unique classfieds links  
-*scraping classfieds title, author, location, phone number  
-*optional filtering records with unique phone numbers  
-*saving results in csv file  
+*scraping classfieds: title, author, location, phone number  
+*optional filtering records with unique phone numbers
 
